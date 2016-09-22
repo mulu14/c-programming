@@ -45,15 +45,14 @@ char*get_name(ware*item){
 	return item -> name; 
 };
 
-/*
-action *save_action(){
 
-	action*new_action = (struct _action*)malloc(sizeof(struct _action));
-	new_action -> type = 0;
-	new_action -> merch = NULL;
-	new_action -> copy = ware; 
-}; 
-*/
+char *get_des(ware*item){
+	return item ->description;  
+}
+
+int get_price(ware*item){
+	return item -> price; 
+}
 
 
 

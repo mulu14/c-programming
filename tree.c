@@ -6,6 +6,7 @@
 #include "tree.h"
 #include "ware.h"
 #include "list.h"
+#include "shelf.h"
 
 
  struct node{
@@ -27,8 +28,13 @@ tree_t *tree_new(){
 	return root; 
 }
 
+tree_t *tree_head(tree_t*root){
+	return root; 
+}
 
-
+ware *return_ware(tree_t *root){
+	return root -> head -> item; 
+}
 
 bool isShelfexist(tree_t *root, shelf *shelfName, char*Itemname){
 	if(root -> head ==NULL)
@@ -41,7 +47,7 @@ bool isShelfexist(tree_t *root, shelf *shelfName, char*Itemname){
 				return true;
 			}
 			current = current -> left; 
-		}
+ 		}
 		return false; 
 	}
 	if(strcmp(get_name(root-> head->item), Itemname) < 0){
@@ -82,11 +88,6 @@ char*get_name_node(tree_t *root){
 	return get_name(root->head ->item);
 	}
 
-
-
-ware*return_item (tree_t*root){
-	return root -> head -> item; 
-}
 
 
 
@@ -175,7 +176,7 @@ void insertNode(tree_t **root, char*Itemname){
 
 
 
-void print_order(tree_t * root){
+void* print_order(tree_t * root){
 	struct tree *temp = tree_new();
 	struct tree *curr = tree_new();
 	temp -> head-> left = root -> head;
@@ -203,7 +204,7 @@ tree_t * min_Value( tree_t* root)
 
 
 
-struct node* remove_N(tree_t **root, char*Itemname){
+_node* remove_N(tree_t **root, char*Itemname){
 	if((*root) -> head == NULL) 
 		printf("the root is empty\n");
 	else if(strcmp(get_name((*root) ->head -> item), Itemname) > 0){
@@ -244,17 +245,49 @@ struct node* remove_N(tree_t **root, char*Itemname){
 		else{
 			tree_t*min = min_Value(curr);
 			*root = min;
-			curr->head = remove_N(&curr, get_name_node(min));
+			/*curr->head */ remove_N(&curr, get_name_node(min));
 		}
 	
 		}
 	}
 
+void printTree(tree_t*root){
+	int i = 0 , j = 1, c;
+    c = 0;
+	int size = tree_size(root); 
 
-
-int main (int argc , char **argv){
-	char *name = "Car"; 
-	tree_t *t = tree_new();
-	insertNode(&t, name); 
-	return 0;
+	char hello[100];
+	printf("Do you wannt to see printed information?\n");
+	printf(" %s\n", "Yes");
+	printf(" %s\n", "No");
+	
+	scanf("%s", hello);
+	if(strcmp(hello, "Yes") ==0){	
+	
+	loop: 
+		for(i = c, j = 0; i < size; i++, ++j){
+		    c++;
+			printf("%d. %s\n", j, (char*)print_order(root));
+			if(j == 20)
+				goto nextstep;
 		}
+	 nextstep:
+		printf("do you wann print more?\n");
+		scanf("%s", hello);
+		if(strcmp(hello, "Yes") ==0){
+			goto loop;
+		}
+		else{
+		 
+				
+		}
+}
+
+	
+}
+/*
+ int  main(int argc , char**argv)
+{
+	return 0; 
+}
+*/
