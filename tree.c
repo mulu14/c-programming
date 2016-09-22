@@ -11,7 +11,6 @@
 
  struct node{
      ware*item;
-	 list_t *shelf_list; 
 	 struct node *left;
 	 struct node *right;
 };
@@ -36,27 +35,29 @@ ware *return_ware(tree_t *root){
 	return root -> head -> item; 
 }
 
-bool isShelfexist(tree_t *root, shelf *shelfName, char*Itemname){
+bool isShelfexist(tree_t *root, shelf *shelfName){
 	if(root -> head ==NULL)
 		return false;
-	if(strcmp(get_name(root-> head -> item), Itemname) > 0){
-		struct node *current = root-> head->left;
+	if(strcmp(get_name(root-> head -> item), get_shelf(shelfName)) > 0){
+		struct tree *current = tree_new(); 
+		current -> head = root-> head->left;
 
 		while(current !=NULL){
-			if(isexist(current ->shelf_list,shelfName)){
+			if(isexist(return_list(return_ware(current)) ,shelfName)){
 				return true;
 			}
-			current = current -> left; 
+			current -> head = current -> head -> left; 
  		}
 		return false; 
 	}
-	if(strcmp(get_name(root-> head->item), Itemname) < 0){
-		struct node *current = root -> head-> right;
+	if(strcmp(get_name(root-> head->item), get_shelf(shelfName)) < 0){
+		struct tree *current = tree_new(); 
+		current-> head = root -> head-> right;
 		while(current!=NULL){
-			if(isexist(current -> shelf_list, shelfName)){
+			if(isexist(return_list(return_ware(current)), shelfName)){
 				return true; 
 			}
-			current  = current -> right; 
+			current -> head  = current -> head -> right; 
 		}
 		return false; 
 	}
@@ -85,10 +86,13 @@ int tree_size(tree_t*root){
 
 
 char*get_name_node(tree_t *root){
-	return get_name(root->head ->item);
+	if(root -> head == NULL){
+		return NULL;}
+	else {
+		return get_name(root->head ->item);
 	}
-
-
+	return NULL; 
+}
 
 
 
@@ -102,12 +106,12 @@ tree_t*find_node(tree_t **root, char*Itemname){
 		}
 		else if(strcmp(get_name((*root)->head -> item), Itemname) > 0){
 			struct tree *temp = tree_new();
-			temp -> head->left  = (*root) -> head; 
+			temp -> head  = (*root) -> head-> left; 
 			return find_node(&temp, Itemname);
 		}
 		else{
 			struct tree *temp = tree_new();
-		    temp -> head-> right  = (*root) -> head; 
+		    temp -> head = (*root) -> head -> right; 
 			return find_node(&temp, Itemname);
 		}
 	}
@@ -142,11 +146,8 @@ int tree_depth(tree_t *node){
 
 void insertNode(tree_t **root, char*Itemname){ 
 	if((*root) -> head ==NULL){
-		(*root) = tree_new();
+		(*root) ->head = tree_new();
 		(*root)->head -> item = create_ware(); 
-		(*root)-> head -> shelf_list = list_new();
-		shelf *Newshelf = new_shelf();
-		list_append((*root) ->head -> shelf_list, Newshelf); 
 		(*root) -> head-> left = NULL;
 		(*root) -> head -> right = NULL; 
 	}
@@ -154,11 +155,7 @@ void insertNode(tree_t **root, char*Itemname){
 		
 		printf("the item already existed");
 		shelf * newShelf = new_shelf();
-		while(!isShelfexist((*root), newShelf ,Itemname)){
-			printf("The shelf is already taken please insert new shelf\n");
-			newShelf = new_shelf(); 
-		}; 
-		list_append((*root)->head-> shelf_list, newShelf); 
+		list_append(return_list(return_ware(*root)), newShelf);
 	}
 	
 	else if(strcmp(get_name((*root) -> head-> item), Itemname) > 0){
@@ -177,36 +174,47 @@ void insertNode(tree_t **root, char*Itemname){
 
 
 void* print_order(tree_t * root){
-	struct tree *temp = tree_new();
-	struct tree *curr = tree_new();
-	temp -> head-> left = root -> head;
-	curr -> head -> right = root -> head;
-	print_order(temp);
-	printf("%s", get_name(root->head -> item));
-	print_order(curr); 
+	if(root -> head == NULL){
+		return NULL; 
+	}
+	else {
+		struct tree *temp = tree_new();
+		struct tree *curr = tree_new();
+		temp -> head = root -> head -> left;
+		curr -> head = root -> head -> right;
+		print_order(temp);
+		printf("%s\n", get_name(root->head -> item));
+		print_order(curr);
+	}
 }
-
+/*
 bool find_shelf(tree_t *root, shelf*shelfName){
 	return isexist(root ->head-> shelf_list, shelfName); 
 	return false; 
-}
+	}*/
 
 // finding minimum value from the right side of tree
-tree_t * min_Value( tree_t* root)
-{
-	struct tree *current = tree_new(); 
-     current-> head= root -> head -> right; 
+tree_t * min_Value( tree_t* root){
+	if(root -> head == NULL){
+		return NULL; 
+	}
+	else {
+		struct tree *current = tree_new(); 
+		current-> head= root -> head -> right; 
 	
-    while (current!=NULL){
-        current -> head= current->head ->left;}
-	return current;
+		while (current!=NULL){
+			current -> head= current->head ->left;}
+		return current;
+	}
 }
 
 
 
-_node* remove_N(tree_t **root, char*Itemname){
-	if((*root) -> head == NULL) 
+void remove_N(tree_t **root, char*Itemname){
+	if((*root) -> head == NULL) {
 		printf("the root is empty\n");
+		return NULL;
+	}
 	else if(strcmp(get_name((*root) ->head -> item), Itemname) > 0){
 		struct tree *temp = tree_new();
 		temp -> head  = (*root) -> head ->left; 

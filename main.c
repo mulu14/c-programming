@@ -11,6 +11,13 @@
 
 
 int main (int argc , char **argv){
+    char * good = "pen"; 
+	tree_t *t = tree_new();
+	insertNode(&t, good );
+	print_order(t);
+	remove_N(&t, good);
+	print_order(t);
+//find_node(&t, good); 
 	return 0;
 
 }

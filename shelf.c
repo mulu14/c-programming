@@ -23,7 +23,7 @@ shelf *new_shelf(){
 	return node;
 }
 
-char *get_shelf( shelf*address){
+char *get_shelf(shelf*address){
 	return address -> shelf_address;
 }
 
