@@ -40,7 +40,9 @@ void list_prepend (list_t *head, shelf*address){
   
 };
 
-
+shelf*return_shelf(list_t *head){
+	return head -> first -> shelfName; 
+}
 void list_append (list_t *head, shelf *address){
 	struct link *listTail = malloc(sizeof(struct link));
 	if(head -> first == NULL){
@@ -168,6 +170,30 @@ char *list_get(list_t *head, int index){
 	}
 	
 	return NULL;
+
+	
+}
+
+shelf *listGetshelf(list_t *head, int index){
+	struct link  *current = head -> first; 
+	int length = list_length(head);
+	int i = 0;
+	if(current == NULL)
+		return NULL;
+	if(index > length){
+		printf("ERROR: no item \n");
+		return NULL; 
+	}
+
+	
+	if(index < length){
+		for(i = 0; i <= index; ++i) {
+		current = current -> next; 
+	}
+		return current ->shelfName;
+	}
+	
+	return NULL;
 }
 
 
@@ -184,8 +210,6 @@ char * list_last(list_t *head){
 	if(head -> last !=NULL)
 		return get_shelf(head -> last->shelfName);
 	return NULL; 
-
- 
 }
 
 bool isexist(list_t * head, shelf*address){
@@ -202,3 +226,17 @@ bool isexist(list_t * head, shelf*address){
 	return false; 
 }
 
+void print_link_list(list_t*head){
+	int i = 0; 
+	if(head -> first == NULL){
+		printf("There is no item to print");
+		return; 
+	} else{
+		struct link *current = head -> first;
+		while(current != NULL){
+			printf("%d, %s:,  %d", i,  get_shelf(current-> shelfName), get_quantity(current -> shelfName));
+			++i; 
+			current = current -> next; 
+		}
+	}
+}

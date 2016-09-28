@@ -32,10 +32,13 @@ int get_quantity(shelf*address){
 }
 
 int set_quantity(shelf*address){
-	char qu[20];
-	int newQun = ask_price(qu); 
-	return(address-> quantity = newQun); 
+	char *qu = (char*)malloc(10*sizeof(char)); 
+	return address-> quantity = ask_quantity(qu);
+	free(qu);
 }
 
 
-
+char *set_shelf(shelf *address){
+  char *add = (char*)malloc(10*sizeof(char));
+return strcpy(address->shelf_address, ask_question_shelf(add));
+}

@@ -8,31 +8,19 @@
 #include "list.h"
 #include "shelf.h"
 #include "tree.h"
- struct _ware{
-	 char *name;
-	 char *description;
-	 int price;
-	 list_t *shelf_list; 
-};
-
-struct _action
-{
-  int type; 
-  ware *merch;
-  ware copy;
-};
-
+#include "utilise.h"
+ 
 
 ware*create_ware(){
-	char string[100];
-	char amount[20];
-	ware *item = (struct _ware*)malloc(sizeof(struct _ware));
+	char str[100];
+	char amount[20]; 
+	ware *item = (ware*)malloc(sizeof(struct _ware));
 	if(item == NULL)
 		return NULL;
 	item -> name = (char*)malloc(100*sizeof(char)+1);
-	strcpy(item ->name, ask_name(string));
+	strcpy(item ->name, ask_name(str));
 	item -> description = (char*)malloc(100*sizeof(char)+1);
-	strcpy(item ->description, ask_description(string));
+	strcpy(item ->description, ask_description(str));
 	item->price = ask_price(amount);
 	item -> shelf_list = list_new();
     shelf *Newshelf = new_shelf();
@@ -66,5 +54,22 @@ list_t* return_list(ware *item){
 	return item -> shelf_list; 
 }
 
+char *set_name(ware*item){
+	char *string = (char*)malloc(100*sizeof(char)+1);
+	return strcpy(item -> name, ask_name(string));
+	free(string); 
+}
+
+char *set_des(ware*item){
+	char *string = (char*)malloc(100*sizeof(char)+1);
+	return strcpy(item -> description, ask_description(string));
+	free(string); 
+}
+
+int set_price(ware*item){
+	char *amount_1 = (char*)malloc(20*sizeof(char) +1); 
+	return item -> price = ask_price(amount_1);
+	free(amount_1); 
+}
 
 

@@ -104,6 +104,9 @@ char* list_last(list_t *list);
 /// \returns the length of list
 int list_length(list_t *list);
 
-bool isexist(list_t * head, shelf*address); 
+bool isexist(list_t * head, shelf*address);
+shelf*return_shelf(list_t *head);
+void print_link_list(list_t*head);
+shelf *listGetshelf(list_t *head, int index); 
 
 #endif
