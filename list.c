@@ -187,7 +187,7 @@ shelf *listGetshelf(list_t *head, int index){
 
 	
 	if(index < length){
-		for(i = 0; i <= index; ++i) {
+		for(i = 0; i < index; ++i) {
 		current = current -> next; 
 	}
 		return current ->shelfName;
@@ -234,7 +234,8 @@ void print_link_list(list_t*head){
 	} else{
 		struct link *current = head -> first;
 		while(current != NULL){
-			printf("%d, %s:,  %d", i,  get_shelf(current-> shelfName), get_quantity(current -> shelfName));
+			printf("%d.%s\n", i,  get_shelf(current-> shelfName));
+			printf("%d.%d\n", i, get_quantity(current -> shelfName)); 
 			++i; 
 			current = current -> next; 
 		}

@@ -16,12 +16,13 @@ action trace_action;
 
 
 void print_menu(){
-	puts("[L]ägga till en vara"); 
-	puts("[T]a bort en vara");
-	puts("[R]edigera en vara");
-	puts("Ån[g]ra senaste ändringen");
-	puts("Lista [h]ela varukatalogen");
-	puts("[A]vsluta");
+	puts("[A] add  item"); 
+	puts("[R] remove item");
+	puts("[E]edit  item");
+	puts("[U]ndo lates change");
+	puts("[L]ist the whole database");
+	puts("[D]isplay content of a item");
+	puts("[Q]ite"); 
 
 }
 
@@ -83,13 +84,13 @@ void add_goods(tree_t *root , ware *foo){
 	scanf("%d", &see);
 	switch(see){
 	case 1:
-		insertNode(root,  get_name(foo));
+		insertNode(root,  foo);
 		lastupdate = 1;
 		trace_action.merch = foo;
 		break;
 	case 2:
 		edit_insert(foo);
-		insertNode(root, get_name(foo)); 
+		insertNode(root, foo); 
 		break;
 	case 3:
 			memset(foo, 0, sizeof(ware));
@@ -100,13 +101,16 @@ void add_goods(tree_t *root , ware *foo){
 }
 
 
-void remove_goods(tree_t * root, ware *item){
-	char * searchItem =  ask_que("Please insert the item you want to remove\t \n");
-	_node*node_search = find_node(return_node_head(root), searchItem);
+void remove_goods(tree_t * root){
+	char itemName[100]; 
+	printf("Please insert the item you would like to delete\n");
+	scanf("%s", itemName); 
+	_node*node_search = find_node(return_node_head(root), itemName);
+	ware*ware_name = returnNodeware(node_search);
 	if(node_search != NULL){
 		trace_action.type = 2;
-		trace_action.copy = *item; 
-		remove_N(root, get_name(item));
+		trace_action.copy = *ware_name; 
+		remove_N(root, ware_name);
 		return; 
 	}
 	else{
@@ -115,14 +119,26 @@ void remove_goods(tree_t * root, ware *item){
 	}
 }
 
+void edit_alternative(){
+	printf("Please insert edit\n"); 
+	printf("%d.Name\n", 1); 
+	printf("%d.Price\n", 2);
+	printf("%d.Description\n", 3);
+	printf("%d.Shelf\n", 4);
+	printf("%d.Quantity\n",5); 
 
-void edit_goods(tree_t* root, ware *item){
+}
+void edit_goods(tree_t* root){
 	int j;
-	char size[50]; 
-	_node*node_search = find_node(return_node_head(root), get_name(item));
+	char size[50];
+	printf("Please insert the item you are looking?: ");
+	scanf("%s", size); 
+	_node*node_search = find_node(return_node_head(root), size);
+    ware*item = returnNodeware(node_search); 
 	if(node_search != NULL) {
-		print_p(node_search, get_name(returnNodeware(node_search))); 
 		item = returnNodeware(node_search);
+		trace_action.copy = *item; 
+		edit_alternative(); 
 		scanf("%d", &j);
 		switch(j){
 		case 1:
@@ -139,23 +155,32 @@ void edit_goods(tree_t* root, ware *item){
 			break;
 		case 4:
 			print_link_list(return_list(item));
-			int number  = ask_quantity(size); 
-			shelf *sh =listGetshelf(return_list(item), number); 
-			printf("%s, the oldshelf: ", get_shelf(sh));
-			printf("%d, the old quanity", get_quantity(sh)); 
-			set_shelf(return_shelf(return_list(item)));
-			set_quantity(return_shelf(return_list(item)));
+			int index_shelf; 
+			printf("Which index shelf you would like to edit\n");
+			scanf("%d", &index_shelf);
+			shelf *at_index_shelf = listGetshelf(return_list(item), index_shelf);
+			printf("%s, the oldshelf: ", get_shelf(at_index_shelf));
+			strcpy(get_shelf(at_index_shelf), ask_question_shelf(size)); 
 			break;
+
+		case 5:
+			print_link_list(return_list(item));
+			int index_quantity; 
+			printf("Which index shelf you would like to edit\n");
+			scanf("%d", &index_quantity);
+			shelf *at_index_qun = listGetshelf(return_list(item), index_quantity);
+			printf("%d, the old quanity", get_quantity(at_index_qun));
+			set_quantity((at_index_qun)); 
 			 
 		default:
 			break; }
 	}
 	else 
 {
-	printf("The item you are looking is not on the data base"); 
+	printf("The item you are looking is not on the data base\n"); 
 }
-	trace_action.merch = item; 
-	trace_action.type = 3;
+		trace_action.merch = item;
+	  	trace_action.type = 3;
 }
 
 
@@ -166,14 +191,23 @@ void list_good(tree_t *root){
 
 
 
-void display_goods(tree_t *root, ware *item){
-	print_p(return_node_head(root), get_name(item)); 
+void display_goods(tree_t *root){
+	char itemName[50]; 
+	printf("Which item would you like to see?:  ");
+	scanf("%s", itemName); 
+	_node*node_search = find_node(return_node_head(root), itemName);
+	if(node_search !=NULL){
+		printf("Name: %s:\n", get_name(returnNodeware(node_search)));
+		printf("Description: %s\n", get_des(returnNodeware(node_search)));
+		printf("Price: %d\n", get_price(returnNodeware(node_search)));
+		printf("Shelf: %s\n", get_shelf(return_shelf(return_list((returnNodeware(node_search))))));
+		printf("Quantity: %d\n", get_quantity(return_shelf(return_list((returnNodeware(node_search)))))); 
+	}
 }
 
 
-void undo_action(tree_t*root, ware *item){
-  
-	puts("insert undo number alternative here, \n");
+void undo_action(tree_t*root, ware*ware_name){
+	puts("insert undo action alternative number here, \n");
 	printf("%d.Undo nothing to database\n", 0);
 	printf("%d.Undo add information\n", 1);
 	printf("%d.Undo delete action\n", 2);
@@ -184,18 +218,22 @@ void undo_action(tree_t*root, ware *item){
 		printf("There is nothing to do\n");
 		break;
 	case 1:
-		// delete action 
+		remove_N(root, trace_action.merch);
+		lastupdate = 0; 
 		printf("There is no more thing to undo\n");
 		break;
     case 2:
-		*trace_action.merch = trace_action.copy;
-		add_goods(root, item); 
+		*strcpy(ware_name-> name, trace_action.copy.name);
+		strcpy(ware_name->description, trace_action.copy.description);
+		ware_name -> price = trace_action.copy.price;
+		ware_name -> shelf_list = trace_action.copy.shelf_list;
+		insertNode(root, ware_name); 
 		lastupdate = 0;
 		printf("There is no more thing to undo\n");
 		break;
 	case 3:
-		*trace_action.merch = trace_action.copy;
-		// add action 
+		*ware_name = trace_action.copy;
+		add_goods(root, ware_name); 
 		lastupdate = 0;
 		printf("There is no more thing to undo\n");
 		break;
@@ -205,24 +243,83 @@ void undo_action(tree_t*root, ware *item){
 }
 
 
-void exit_program(){
+bool quit_action()
+{
+  do
+    {
+      puts("Do you want to quit? [Y/N]");
+      char input = getchar(); 
+
+      if (input == 'Y') return true;
+      if (input == 'N') return false;
+
+      puts("Only Y or N are valid answers!");
+    }while(true); 
+
+  return false;
 }
 
 
-int main (int argc , char **argv){
 
-	//ask_question_string("Please insert your name"); 
-	tree_t T ;
-	ware *ware_name = create_ware();
-	
-	//printf("%s\n", get_name(ware_name)); 
-	tree_t *root = &T; 
-	add_goods(root, ware_name); 
-	//remove_goods(root, item);
+
+int main (int argc , char **argv){
 	
 	
-	//edit_insert(item);
-	//edit_goods(root, item); 
-	return 0;
+	printf("Välkommen till lagerhantering 1.0\n"); 
+	printf("=================================\n"); 
+
+	ware * ware_name = createWare(); 
+	tree_t *root = tree_new();
+	char c; 
+	bool end_action = false;
+	while(!end_action){
+		puts("What are you going to do?\n");
+		print_menu(); 
+    	scanf("%c",&c);
+		if(c =='A'){
+			ware *wareName = insertInfo_at_ware(); 
+			add_goods(root, wareName);
+		}
+	    if(c =='R'){
+			remove_goods(root);
+		}
+		if(c =='D'){
+			display_goods(root);
+		}
+	    if(c =='E'){
+			edit_goods(root);
+		}
+	    if(c== 'U'){
+			undo_action(root, ware_name);
+		}
+		if(c=='L'){
+		list_good(root);
+		}
+		if(c=='Q'){
+			end_action = quit_action();}
+			}
+	
+	
+	/*
+
+	ware*name = insertInfo_at_ware();
+	trace_action.copy = *name;
+	*trace_action.merch = 	trace_action.copy; 
+	printf("%s\n", get_name(trace_action.merch)); 
+	tree_t *root = tree_new();
+	add_goods(root, name); 
+	print_p(return_node_head(root), "Key"); 
+	remove_goods(root, trace_action.merch);
+    printf("%s\n", get_name(trace_action.merch)); 
+	*/
+	/*
+	print_p(return_node_head(root), "Key");
+	undo_action(root, name);
+	print_p(return_node_head(root), "Key"); */
+	return 0; 
+	//printTree(root);
+	//printf("%s", get_name(return_ware(root))); 
+	//
+	
 
 }

@@ -11,7 +11,8 @@ typedef struct _ware{
 	 list_t *shelf_list; 
 }ware;
 typedef struct list list_t;
-ware * create_ware();
+ware*insertInfo_at_ware(); 
+ware *createWare(); 
 char *get_name(ware*item);
 char *get_des(ware*item);
 int get_price(ware*item);

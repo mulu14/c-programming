@@ -35,7 +35,7 @@ _node*return_node_head(tree_t *root){
 }
 
 ware *return_ware(tree_t *root){
-	return root -> head -> item; 
+	return root -> head ->item; 
 }
 ware *returnNodeware(_node*wareName){
 	return wareName -> item; 
@@ -48,34 +48,27 @@ void print(_node*d){
 }
 
 
-bool isShelfexist(_node *root, shelf *shelfName){
+bool isShelftaken(_node *root, shelf *shelfName){
 	if(root ==NULL)
-		return false;
-	if(strcmp(get_name(root->item), get_shelf(shelfName)) > 0){
-		_node *current = root;
-		root = current -> left; 
-		while(root !=NULL){
-			if(isexist(return_list(returnNodeware(root)) ,shelfName)){
+		return true;
+	else if (root !=NULL){
+		if(isexist(return_list(returnNodeware(root)) ,shelfName)){
 				return true;
-			}
-			root = current ->left; 
- 		}
-		return false; 
-	}
-	if(strcmp(get_name(root->item), get_shelf(shelfName)) < 0){
-		_node *current = root;
-		root = current -> right;  
-		while(root!=NULL){
-			if(isexist(return_list(returnNodeware(root)), shelfName)){
-				return true; 
-			}
-			root = current -> right; 
 		}
-		return false; 
+		else if (isexist(return_list(returnNodeware(root-> left)), shelfName)){
+				return true;}
+		
+		else if(isexist(return_list(returnNodeware(root-> right)), shelfName)){
+			return true; 
+			}
+		else {
+			return false; 
+		}
+		
 	}
-	else {
-		return false; 
-	}
+	isShelfexist(root -> left, shelfName);
+	isShelfExist(root -> right, shelfName);
+	return true; 
 }
 
 
@@ -158,10 +151,11 @@ int tree_depth(_node *leaf){
 
 
 
-void insertNode(tree_t *root, char*Itemname){ 
+void insertNode(tree_t *root, ware*ware_name){
+	char *Itemname = get_name(ware_name); 
 	if(root -> head ==NULL){
 		root -> head = create_node(); 
-		root->head -> item = create_ware(); 
+		root->head -> item = ware_name; 
 		root-> head-> left = NULL;
 		root -> head -> right = NULL; 
 	}
@@ -175,14 +169,14 @@ void insertNode(tree_t *root, char*Itemname){
 	else if(strcmp(get_name(root -> head-> item), Itemname) > 0){
 		_node*temp = root -> head-> left;
         root -> head = temp; 
-		insertNode(root, Itemname);
+		insertNode(root, ware_name);
 		free(temp); 
 	}
 	
 	else if(strcmp(get_name(root ->head ->item), Itemname) <0){
 		_node *temp = root -> head->right; 
 		root -> head = temp; 
-		insertNode(root, Itemname);
+		insertNode(root, ware_name);
 		free(temp); 
 	}
 
@@ -208,7 +202,8 @@ _node * min_Value(_node* root){
 
 
 
-void remove_N(tree_t *root, char*Itemname){
+void remove_N(tree_t *root, ware*ware_name){
+	char *Itemname = get_name(ware_name);
 	if(root -> head == NULL) {
 		printf("the root is empty\n");
 		return;
@@ -216,12 +211,12 @@ void remove_N(tree_t *root, char*Itemname){
 	else if(strcmp(get_name(root ->head -> item), Itemname) > 0){
 		_node *temp = root -> head->left;
 		root -> head  = temp; 
-		remove_N(root, Itemname);
+		remove_N(root, ware_name);
 	}
 	else if(strcmp(get_name(root ->head -> item), Itemname) < 0){
 		_node *temp = root -> head-> right; 
 		root -> head  = temp; 
-		remove_N(root, Itemname);}
+		remove_N(root, ware_name);}
 
 	else{
 		// delete root and the root has no left or right child
@@ -248,7 +243,7 @@ void remove_N(tree_t *root, char*Itemname){
 		else{
 			_node *min = min_Value(root->head);
 			root -> head = min; 
-			remove_N(root, return_Node_name(min));
+			remove_N(root, returnNodeware(min));
 		}
 	
 		}
@@ -273,46 +268,39 @@ char* dump_tree(_node *leaf, char *arry[], int *p_t){
 }
 
 
-void print_p(_node*Node_name, char *ItemName){
-	
-	if(strcmp(return_Node_name(find_node(Node_name, ItemName)), return_Node_name(Node_name)) ==0){
-		printf("%s\n", get_name(returnNodeware(Node_name)));
-		printf("%s\n", get_des(returnNodeware(Node_name)));
-		printf("%d\n", get_price(returnNodeware(Node_name)));
-		printf("%s\n", get_shelf(return_shelf(return_list((returnNodeware(Node_name))))));
-		printf("%d\n", get_quantity(return_shelf(return_list((returnNodeware(Node_name)))))); 
-	}
-	else{
-		printf("The item you are looking is not on database");
-		return; 
-	}
-	}
 
+
+
+
+
+		
 void printTree(tree_t*root){
-	int i = 0 , j = 1, c;
+	int i = 0 , j = 1,k, c;
     c = 0;
 	int size = tree_size(root-> head); 
-    char* empty[size]; 
-
-	char *hello = (char*)malloc(10*sizeof(char)); 
+    char* wareArray[size];
+	dump_tree(root-> head, wareArray, &i);
+	 
 	printf("Do you wannt to see printed information?\n");
-	printf("%s\n", "Yes");
-	printf("%s\n", "No");
+	printf("%d.%s\n", 1, "Yes");
+	printf("%d.%s\n", 2, "No");
 	
-	scanf("%s", hello);
-	if(strcmp(hello, "Yes") ==0){	
+	scanf("%d", &k);
+	if(k ==1){	
 	
 	loop: 
 		for(i = c, j = 0; i < size; i++, ++j){
 		    c++;
-			printf("%d. %s\n", j, dump_tree(root-> head, empty, &i));
+			printf("%d. %s\n", j, wareArray[i]);
 			if(j == 20)
 				goto nextstep;
 		}
 	 nextstep:
 		printf("do you wann print more?\n");
-		scanf("%s", hello);
-		if(strcmp(hello, "Yes") ==0){
+		printf("%d.%s\n", 1, "Yes");
+		printf("%d.%s\n", 2, "No");
+		scanf("%d", &k);
+		if(k ==1){
 			goto loop;
 		}
 		else{
@@ -320,8 +308,7 @@ void printTree(tree_t*root){
 				
 		}
 }
-
-	free(hello); 
-	
 }
+
+
 

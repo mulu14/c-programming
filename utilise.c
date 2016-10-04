@@ -149,7 +149,7 @@ bool string_validation(char *string) {
 bool read_string_bool(){
 	bool correct;
 	char *buff = (char*)malloc(100*sizeof(char)+ 1); 
-
+	
 	do{
 		fgets(buff, 99, stdin);
 		correct = false;

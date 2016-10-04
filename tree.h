@@ -25,17 +25,19 @@ char *return_Node_name(_node*name);
 char*get_name_node(tree_t *root);
 _node*find_node(_node*root, char*Itemname);
 int tree_depth(_node *leaf);
-void insertNode(tree_t *root, char*Itemname);
+void insertNode(tree_t *root, ware*ware_name);
 void* print_order(tree_t * root);
-bool find_shelf(tree_t *root, shelf*shelfName);
+bool find_shelf(tree_t *root, shelf*shelfName); 
 _node * min_Value(_node* root);
-void remove_N(tree_t *root, char*Itemname);
+void remove_N(tree_t *root, ware*ware_name); 
 void printTree(tree_t*root);
 ware* return_ware(tree_t*root);
 char*dump_tree(_node *leaf, char*arry[], int *p_t);
 _node*return_node_head(tree_t *root);
 void print(_node*d);
 void print_p(_node*Node_name, char *ItemName);
-ware *returnNodeware(_node*wareName); 
+ware *returnNodeware(_node*wareName);
+void print_tree_nodes(tree_t*root);
+
 
 #endif

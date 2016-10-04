@@ -9,17 +9,23 @@
 #include "shelf.h"
 #include "tree.h"
 #include "utilise.h"
- 
 
-ware*create_ware(){
+ware*createWare(){
+	ware*newWare =(ware*)malloc(sizeof(struct _ware));
+	newWare -> name = (char*)malloc(100*sizeof(char) +1);
+	newWare -> description = (char*)malloc(100*sizeof(char) +1);
+	newWare -> price = 0;
+	newWare -> shelf_list = list_new();
+	return newWare; 
+}
+
+ware*insertInfo_at_ware(){
 	char str[100];
 	char amount[20]; 
-	ware *item = (ware*)malloc(sizeof(struct _ware));
+	ware *item = createWare(); 
 	if(item == NULL)
 		return NULL;
-	item -> name = (char*)malloc(100*sizeof(char)+1);
 	strcpy(item ->name, ask_name(str));
-	item -> description = (char*)malloc(100*sizeof(char)+1);
 	strcpy(item ->description, ask_description(str));
 	item->price = ask_price(amount);
 	item -> shelf_list = list_new();
@@ -38,7 +44,8 @@ ware*create_ware(){
 }; 
 
 char*get_name(ware*item){
-	return item -> name; 
+	return item -> name;
+   
 };
 
 
