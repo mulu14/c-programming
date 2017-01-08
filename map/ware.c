@@ -25,14 +25,11 @@ ware * createNewWare(char* name, char* description, int price, list_t* shelf_lis
 	return newWare;  
 }
 
-
-
 ware*insertInfo_at_ware(tree_t *t){
 
 	char *name = ask_question_string("insert item name : ");
 	char *description = ask_question_string("insert item description: "); 
 	int price =   ask_question_int("insert price : ");
-	
     list_t* shelf_list = list_new();
     shelf *Newshelf = new_shelf();
 

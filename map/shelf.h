@@ -13,5 +13,5 @@ char *get_shelf(shelf*address);
 int get_quantity(shelf*address);
 int set_quantity(shelf*address);
 char *set_shelf(shelf *address); 
-void setQauntity(shelf*s, int Quant); 
+
 #endif

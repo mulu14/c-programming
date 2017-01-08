@@ -12,7 +12,7 @@
 
 /// Define struct list in your .c file not here! (why?)
 typedef struct list list_t;
-typedef struct link link_t; 
+
 /// \file list.h
 ///
 /// \author Tobias Wrigstad
@@ -107,7 +107,6 @@ int list_length(list_t *list);
 bool isexist(list_t * head, shelf*address);
 shelf*return_shelf(list_t *head);
 void print_link_list(list_t*head);
-shelf *listGetshelf(list_t *head, int index);
-list_t* copyListA(list_t*list); 
+shelf *listGetshelf(list_t *head, int index); 
 
 #endif

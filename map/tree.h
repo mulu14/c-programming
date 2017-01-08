@@ -8,7 +8,6 @@
 /// Define struct tree in your .c file not here! (why?)
 typedef struct ware_t ware;
  typedef struct node{
-   char*itemName; 
    ware*item;
    struct node *left;
    struct node *right;
@@ -26,11 +25,11 @@ char *return_Node_name(node_t*name);
 char*get_name_node(tree_t *root);
 node_t*find_node(tree_t*root, char*Itemname);
 int tree_depth(node_t *leaf);
-bool insertNode(tree_t *root, char*name,  ware*ware_name);
+bool insertNode(tree_t *root, ware*ware_name);
 void  print_order(tree_t * root);
 bool find_shelf(tree_t *root, shelf*shelfName); 
 node_t * min_Value(node_t* root);
-bool remove_N(tree_t *root, char*name); 
+bool remove_N(tree_t *root, ware*ware_name); 
 ware* return_ware(tree_t*root);
 node_t*return_node_head(tree_t *root);
 ware *returnNodeware(node_t*wareName);

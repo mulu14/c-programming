@@ -7,7 +7,7 @@
 typedef struct ware_t{
 	 char *name;
 	 char *description;
-	 int price; 
+	 int price;
 	 list_t *shelf_list; 
 }ware;
 typedef struct list list_t;

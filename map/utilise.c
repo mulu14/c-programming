@@ -51,20 +51,16 @@ bool is_number(char*str0){
 }
 
 
-
 bool right_form(char *string){
-  int len = strlen(string);
-  if(len  < 2 ){
-      return false; 
-    }
-  if (!isalpha(string[0]))
-    return false;
+    int len = strlen(string);
+    if (!isalpha(string[0]) || (len > 1 && !isdigit(string[1])))
+        return false;
 
-  for (int i = 1; i < len && string[i] != '\n'; ++i)
-    if (!isdigit(string[i]) )
-      return false;
+    for (int i = 1; i < len && string[i] != '\n'; ++i)
+        if (!isdigit(string[i]))
+            return false;
 
-  return true;
+    return true;
 }
 
 

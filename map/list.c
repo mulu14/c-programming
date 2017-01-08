@@ -226,58 +226,6 @@ bool isexist(list_t * head, shelf*address){
 	return false; 
 }
 
-
-
-
-struct list *copyListA(struct list *list)
-{
-    struct list *new = list_new(); 
-    struct link *current = list->first;
-    struct link *newCurrent = malloc(sizeof(struct link));
-
-    if(current == NULL || newCurrent == NULL || (new == NULL))
-    {
-        if(newCurrent != NULL)
-        {
-	  free(newCurrent); 
-        }
-        if(new != NULL)
-        {
-            free(new);
-        }
-
-        return NULL; 
-    }
-    else
-    {
-        new->first = newCurrent; 
-    }
-
-
-    while(current != NULL) 
-    {
-     
-      char *nameOfshelf = get_shelf(current-> shelfName);
-      int quantityOfShelf = get_quantity(current -> shelfName); 
-      newCurrent->shelfName = makeShelf(strdup(nameOfshelf),quantityOfShelf);
-      current = current->next;        
-         if(current != NULL)
-        {
-            newCurrent->next = malloc(sizeof(struct link));
-            newCurrent = newCurrent->next;
-        }
-        else
-        {
-            new->last = newCurrent;
-        }
-    }
-
-    return new;
-}
-
-
-
-
 void print_link_list(list_t*head){
 	int i = 0; 
 	if(head -> first == NULL){

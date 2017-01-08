@@ -34,9 +34,6 @@ int get_quantity(shelf*address){
 	return address -> quantity; 
 }
 
-void setQauntity(shelf*s, int Quant){
-  s ->  quantity = Quant; 
-}
 int set_quantity(shelf*address){
 	return address-> quantity = ask_question_int("insert quantity: "); 
 }
